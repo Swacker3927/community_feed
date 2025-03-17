@@ -1,6 +1,6 @@
 package org.fastcampus.user.domain;
 
-class UserInfo {
+public class UserInfo {
     private final String name;
     private final String profileImageUrl;
 
@@ -12,5 +12,9 @@ class UserInfo {
 
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getName() {
+        return name;
     }
 }
