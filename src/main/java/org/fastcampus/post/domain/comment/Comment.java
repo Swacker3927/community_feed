@@ -1,11 +1,11 @@
 package org.fastcampus.post.domain.comment;
 
 import org.fastcampus.common.domain.*;
-import org.fastcampus.post.domain.Post;
+import org.fastcampus.post.domain.*;
 import org.fastcampus.post.domain.content.CommentContent;
 import org.fastcampus.user.domain.User;
 
-class Comment {
+public class Comment {
     private final Long id;
     private final Post post;
     private final User author;
@@ -52,5 +52,13 @@ class Comment {
         }
 
         this.content.updateContent(updateContent);
+    }
+
+    public int getLikeCount() {
+        return likeCount.getCount();
+    }
+
+    public String getContent() {
+        return content.getContentText();
     }
 }
