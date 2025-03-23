@@ -1,18 +1,23 @@
 package org.fastcampus.post.domain.comment;
 
 import org.fastcampus.common.domain.*;
-import org.fastcampus.post.domain.*;
+import org.fastcampus.post.domain.Post;
 import org.fastcampus.post.domain.content.CommentContent;
+import org.fastcampus.post.domain.content.Content;
 import org.fastcampus.user.domain.User;
 
 public class Comment {
     private final Long id;
     private final Post post;
     private final User author;
-    private final CommentContent content;
+    private final Content content;
     private final PositiveIntegerCounter likeCount;
 
-    public Comment(Long id, Post post, User author, CommentContent content) {
+    public static Comment createComment(Post post, User author, String content) {
+        return new Comment(null, post, author, new CommentContent(content));
+    }
+
+    public Comment(Long id, Post post, User author, Content content) {
         if (author == null) {
             throw new IllegalArgumentException();
         }
@@ -39,10 +44,7 @@ public class Comment {
         likeCount.increase();
     }
 
-    public void unlike(User user) {
-        if (this.author.equals(user)) {
-            throw new IllegalArgumentException();
-        }
+    public void unlike() {
         likeCount.decrease();
     }
 
@@ -54,11 +56,27 @@ public class Comment {
         this.content.updateContent(updateContent);
     }
 
-    public int getLikeCount() {
-        return likeCount.getCount();
+    public Long getId() {
+        return id;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public User getAuthor() {
+        return author;
     }
 
     public String getContent() {
         return content.getContentText();
+    }
+
+    public Content getContentObject() {
+        return content;
+    }
+
+    public int getLikeCount() {
+        return likeCount.getCount();
     }
 }

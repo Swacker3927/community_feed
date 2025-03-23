@@ -5,12 +5,12 @@ import org.fastcampus.user.application.dto.*;
 import org.fastcampus.user.domain.*;
 
 public class UserRelationService {
-    private final UserRelationRepository userRelationRepository;
     private final UserService userService;
+    private final UserRelationRepository userRelationRepository;
 
-    public UserRelationService(UserRelationRepository userRelationRepository, UserService userService) {
-        this.userRelationRepository = userRelationRepository;
+    public UserRelationService(UserService userService, UserRelationRepository userRelationRepository) {
         this.userService = userService;
+        this.userRelationRepository = userRelationRepository;
     }
 
     public void follow(FollowUserRequestDto dto) {

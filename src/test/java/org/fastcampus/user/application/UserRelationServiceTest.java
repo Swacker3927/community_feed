@@ -1,6 +1,6 @@
 package org.fastcampus.user.application;
 
-import org.fastcampus.common.*;
+import org.fastcampus.fake.*;
 import org.fastcampus.user.application.dto.*;
 import org.fastcampus.user.domain.*;
 import org.junit.jupiter.api.BeforeEach;
