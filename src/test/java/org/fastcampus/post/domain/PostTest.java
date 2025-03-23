@@ -1,7 +1,6 @@
 package org.fastcampus.post.domain;
 
-import org.fastcampus.post.domain.content.PostContent;
-import org.fastcampus.post.domain.content.PostPublicationState;
+import org.fastcampus.post.domain.content.*;
 import org.fastcampus.user.domain.*;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ class PostTest {
     private final User user = new User(1L, info);
     private final User otherUser = new User(2L, info);
 
-    private final Post post = new Post(1L, user, new PostContent("content"));
+    private final Post post = Post.createDefaultPost(1L, user, "content");
 
     @Test
     void givenPost_whenLike_thenIncreaseLikeCount() {
@@ -39,7 +38,7 @@ class PostTest {
         int likeCount = post.getLikeCount();
 
         //  when
-        post.unlike(otherUser);
+        post.unlike();
 
         //  then
         assertEquals(likeCount - 1, post.getLikeCount());
@@ -48,7 +47,7 @@ class PostTest {
     @Test
     void givenPostCreated_whenUnlike_thenLikeCountIsZero() {
         //  when
-        post.unlike(otherUser);
+        post.unlike();
 
         //  then
         assertEquals(0, post.getLikeCount());

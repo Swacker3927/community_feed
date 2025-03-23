@@ -1,16 +1,14 @@
 package org.fastcampus.user.application;
 
-import org.fastcampus.user.application.Interfaces.*;
+import org.fastcampus.fake.*;
 import org.fastcampus.user.application.dto.*;
 import org.fastcampus.user.domain.*;
-import org.fastcampus.user.repository.FakeUserRepository;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
-    private final UserRepository userRepository = new FakeUserRepository();
-    private final UserService userService = new UserService(userRepository);
+    private final UserService userService = FakeObjectFactory.getUserService();
 
     @Test
     void givenUserInfoDto_whenCreateUser_thenCanFindUser() {
