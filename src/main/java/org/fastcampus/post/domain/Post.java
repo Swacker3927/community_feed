@@ -1,9 +1,15 @@
 package org.fastcampus.post.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import org.fastcampus.common.domain.*;
 import org.fastcampus.post.domain.content.*;
 import org.fastcampus.user.domain.User;
 
+@Builder
+@Getter
+@AllArgsConstructor
 public class Post {
     private final Long id;
     private final User author;
@@ -53,14 +59,6 @@ public class Post {
 
     public void unlike() {
         likeCount.decrease();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public User getAuthor() {
-        return author;
     }
 
     public String getContent() {
