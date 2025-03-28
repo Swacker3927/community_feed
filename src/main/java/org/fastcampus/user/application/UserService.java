@@ -1,8 +1,7 @@
 package org.fastcampus.user.application;
 
-import java.util.IllformedLocaleException;
-import org.fastcampus.user.application.Interfaces.*;
-import org.fastcampus.user.application.dto.*;
+import org.fastcampus.user.application.Interfaces.UserRepository;
+import org.fastcampus.user.application.dto.CreateUserRequestDto;
 import org.fastcampus.user.domain.*;
 
 public class UserService {
@@ -19,6 +18,6 @@ public class UserService {
     }
 
     public User getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(IllformedLocaleException::new);
+        return userRepository.findById(id);
     }
 }
