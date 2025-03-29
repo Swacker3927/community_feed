@@ -11,12 +11,14 @@ import lombok.NoArgsConstructor;
 import org.fastcampus.common.domain.*;
 import org.fastcampus.common.repository.entity.*;
 import org.fastcampus.user.domain.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "community_user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@DynamicUpdate
 public class UserEntity extends TimeBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
