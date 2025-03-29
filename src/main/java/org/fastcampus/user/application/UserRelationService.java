@@ -1,9 +1,11 @@
 package org.fastcampus.user.application;
 
-import org.fastcampus.user.application.Interfaces.*;
-import org.fastcampus.user.application.dto.*;
+import org.fastcampus.user.application.Interfaces.UserRelationRepository;
+import org.fastcampus.user.application.dto.FollowUserRequestDto;
 import org.fastcampus.user.domain.*;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserRelationService {
     private final UserService userService;
     private final UserRelationRepository userRelationRepository;
