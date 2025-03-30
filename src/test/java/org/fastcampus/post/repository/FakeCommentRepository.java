@@ -2,7 +2,6 @@ package org.fastcampus.post.repository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import org.fastcampus.post.application.Interfaces.CommentRepository;
 import org.fastcampus.post.domain.comment.*;
 
@@ -22,7 +21,7 @@ public class FakeCommentRepository implements CommentRepository {
     }
 
     @Override
-    public Optional<Comment> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
+    public Comment findById(Long id) {
+        return store.get(id);
     }
 }
