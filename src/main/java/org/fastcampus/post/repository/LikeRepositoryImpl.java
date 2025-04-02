@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.fastcampus.post.application.Interfaces.LikeRepository;
 import org.fastcampus.post.domain.Post;
 import org.fastcampus.post.domain.comment.*;
-import org.fastcampus.post.repository.entity.comment.*;
 import org.fastcampus.post.repository.entity.like.*;
-import org.fastcampus.post.repository.entity.post.PostEntity;
 import org.fastcampus.post.repository.jpa.*;
 import org.fastcampus.user.domain.User;
 import org.springframework.stereotype.Repository;
@@ -35,7 +33,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     public void like(Post post, User user) {
         LikeEntity likeEntity = new LikeEntity(post, user);
         entityManager.persist(likeEntity);
-        jpaPostRepository.updatePostLikeCount(new PostEntity(post));
+        jpaPostRepository.updatePostLikeCount(post.getId(), 1);
     }
 
     @Override
@@ -43,7 +41,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     public void unlike(Post post, User user) {
         LikeEntity likeEntity = new LikeEntity(post, user);
         jpaLikeRepository.deleteById(likeEntity.getId());
-        jpaPostRepository.updatePostLikeCount(new PostEntity(post));
+        jpaPostRepository.updatePostLikeCount(post.getId(), -1);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     public void like(Comment comment, User user) {
         LikeEntity likeEntity = new LikeEntity(comment, user);
         entityManager.persist(likeEntity);
-        jpaCommentRepository.updateCommentLikeCount(new CommentEntity(comment));
+        jpaCommentRepository.updateCommentLikeCount(comment.getId(), 1);
     }
 
     @Override
@@ -65,6 +63,6 @@ public class LikeRepositoryImpl implements LikeRepository {
     public void unlike(Comment comment, User user) {
         LikeEntity likeEntity = new LikeEntity(comment, user);
         jpaLikeRepository.deleteById(likeEntity.getId());
-        jpaCommentRepository.updateCommentLikeCount(new CommentEntity(comment));
+        jpaCommentRepository.updateCommentLikeCount(comment.getId(), -1);
     }
 }
