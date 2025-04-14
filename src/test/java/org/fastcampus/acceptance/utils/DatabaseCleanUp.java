@@ -29,7 +29,7 @@ public class DatabaseCleanUp implements InitializingBean {
                 .map(entity -> entity.getJavaType().getAnnotation(Table.class).name())
                 .toList();
 
-        notGeneratedIdEntityTableNames = List.of("community_user_relation", "community_like");
+        notGeneratedIdEntityTableNames = List.of("community_user_relation", "community_like", "community_user_auth");
     }
 
     @Transactional
