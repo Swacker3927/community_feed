@@ -7,6 +7,13 @@ public class Password {
         this.encryptedPassword = encryptedPassword;
     }
 
+    public static Password createPassword(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+        return new Password(password);
+    }
+
     public static Password createEncryptPassword(String password) {
         if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("Encrypted password cannot be null or empty");

@@ -5,4 +5,5 @@ import org.fastcampus.user.domain.User;
 
 public interface UserAuthRepository {
     UserAuth registerUser(UserAuth auth, User user);
+    UserAuth loggingUser(String email, String password);
 }
