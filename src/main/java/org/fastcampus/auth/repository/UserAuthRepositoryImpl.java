@@ -26,6 +26,7 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
     }
 
     @Override
+    @Transactional
     public UserAuth loggingUser(String email, String password) {
         UserAuthEntity userAuthEntity = jpaUserAuthRepository.findById(email).orElseThrow();
         UserAuth userAuth = userAuthEntity.toUserAuth();
@@ -34,6 +35,7 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
             throw new IllegalArgumentException("Invalid password");
         }
 
+        userAuthEntity.updateLastLoginDt();
         return userAuth;
     }
 }
