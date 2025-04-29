@@ -1,6 +1,7 @@
 package org.fastcampus.post.ui;
 
 import lombok.RequiredArgsConstructor;
+import org.fastcampus.common.idempotency.*;
 import org.fastcampus.common.ui.*;
 import org.fastcampus.post.application.PostService;
 import org.fastcampus.post.application.dto.CreatePostRequestDto;
@@ -32,6 +33,7 @@ public class PostController {
         return Response.OK(post.getId());
     }
 
+    @Idempotent
     @PostMapping("/like")
     public Response<Void> likePost(@RequestBody LikeRequestDto dto) {
         postService.likePost(dto);
