@@ -1,7 +1,7 @@
 package org.fastcampus.user.application;
 
-import org.fastcampus.user.application.Interfaces.*;
-import org.fastcampus.user.application.dto.*;
+import org.fastcampus.user.application.dto.FollowUserRequestDto;
+import org.fastcampus.user.application.interfaces.*;
 import org.fastcampus.user.domain.*;
 
 public class UserRelationService {

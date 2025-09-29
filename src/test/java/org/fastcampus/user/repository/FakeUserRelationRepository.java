@@ -2,7 +2,7 @@ package org.fastcampus.user.repository;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.fastcampus.user.application.Interfaces.*;
+import org.fastcampus.user.application.interfaces.*;
 import org.fastcampus.user.domain.*;
 
 public class FakeUserRelationRepository implements UserRelationRepository {

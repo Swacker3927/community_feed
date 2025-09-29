@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.springframework.boot") version "3.4.4"
+    id("org.springframework.boot") version "4.0.0-M3"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
@@ -20,6 +20,12 @@ dependencies {
 
     //  mysql
     runtimeOnly("com.mysql:mysql-connector-j:9.4.0")
+
+    //  querydsl
+    implementation("io.github.openfeign.querydsl:querydsl-jpa:6.10.1")
+    annotationProcessor("io.github.openfeign.querydsl:querydsl-apt:6.10.1:jpa")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
     //  lombok
     implementation("org.projectlombok:lombok")
