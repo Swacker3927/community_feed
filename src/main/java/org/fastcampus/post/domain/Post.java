@@ -1,73 +1,87 @@
 package org.fastcampus.post.domain;
 
+import java.util.Objects;
+import lombok.Builder;
+import lombok.Getter;
 import org.fastcampus.common.domain.*;
 import org.fastcampus.post.domain.content.*;
 import org.fastcampus.user.domain.User;
 
+@Getter
 public class Post {
     private final Long id;
     private final User author;
     private final Content content;
     private PostPublicationState state;
-    private final PositiveIntegerCounter likeCount;
+    private final PositiveIntegerCounter likeCounter;
 
-    public static Post createPost(Long id, User author, String content, PostPublicationState state) {
-        return new Post(id, author, new PostContent(content), state);
-    }
-
-    public static Post createDefaultPost(Long id, User author, String content) {
-        return new Post(id, author, new PostContent(content), PostPublicationState.PUBLIC);
-    }
-
-    public Post(Long id, User author, Content content, PostPublicationState state) {
+    @Builder
+    public Post(Long id, User author, Content content, PostPublicationState state, PositiveIntegerCounter positiveIntegerCounter) {
         if (author == null) {
-            throw new IllegalArgumentException("author should not be null");
+            throw new IllegalArgumentException("Author should not be null.");
         }
-
         if (content == null) {
-            throw new IllegalArgumentException("content should not be null or empty");
+            throw new IllegalArgumentException("Content should not be null or empty.");
         }
 
         this.id = id;
         this.author = author;
         this.content = content;
         this.state = state;
-        this.likeCount = new PositiveIntegerCounter();
+        this.likeCounter = positiveIntegerCounter;
     }
 
-    public void updatePost(User user, String updateContent, PostPublicationState state) {
-        if (!this.author.equals(user)) {
-            throw new IllegalArgumentException("only author can update content");
+    public Post(Long id, User author, Content content) {
+        this(id, author, content, PostPublicationState.PUBLIC, new PositiveIntegerCounter());
+    }
+
+    public Post(Long id, User author, String content) {
+        this(id, author, new PostContent(content), PostPublicationState.PUBLIC, new PositiveIntegerCounter());
+    }
+
+    public void updateContent(User user, String content, PostPublicationState state) {
+        if (!author.equals(user)) {
+            throw new IllegalArgumentException("Only author can update content.");
         }
 
-        this.content.updateContent(updateContent);
+        if (state == null) {
+            state = PostPublicationState.PUBLIC;
+        }
+
+        this.content.updateContent(content);
         this.state = state;
     }
 
     public void like(User user) {
-        if (this.author.equals(user)) {
-            throw new IllegalArgumentException();
+        if (author.equals(user)) {
+            throw new IllegalArgumentException("Author cannot like own post.");
         }
-        likeCount.increase();
+        likeCounter.increase();
     }
 
     public void unlike() {
-        likeCount.decrease();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public String getContent() {
-        return content.getContentText();
+        likeCounter.decrease();
     }
 
     public int getLikeCount() {
-        return likeCount.getCount();
+        return likeCounter.getCount();
+    }
+
+    public String getContentText() {
+        return content.getContentText();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Post post = (Post) o;
+        return Objects.equals(id, post.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

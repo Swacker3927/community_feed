@@ -1,4 +1,4 @@
-package org.fastcampus.post.application.Interfaces;
+package org.fastcampus.post.application.interfaces;
 
 import org.fastcampus.post.domain.Post;
 import org.fastcampus.post.domain.comment.*;

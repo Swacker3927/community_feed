@@ -1,9 +1,9 @@
-package org.fastcampus.post.application.Interfaces;
+package org.fastcampus.post.application.interfaces;
 
-import java.util.Optional;
 import org.fastcampus.post.domain.*;
 
 public interface PostRepository {
+    Post findById(Long id);
     Post save(Post post);
-    Optional<Post> findById(Long id);
+    Post publish(Post post);
 }

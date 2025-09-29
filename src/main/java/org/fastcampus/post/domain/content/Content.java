@@ -1,7 +1,5 @@
 package org.fastcampus.post.domain.content;
 
-import org.fastcampus.post.domain.common.*;
-
 public abstract class Content {
     protected String contentText;
     protected final DatetimeInfo datetimeInfo;

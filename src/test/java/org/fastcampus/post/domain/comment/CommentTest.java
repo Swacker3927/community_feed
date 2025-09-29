@@ -1,80 +1,72 @@
 package org.fastcampus.post.domain.comment;
 
-import org.fastcampus.post.domain.Post;
-import org.fastcampus.post.domain.content.CommentContent;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.fastcampus.post.domain.*;
 import org.fastcampus.user.domain.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class CommentTest {
-    private final UserInfo info = new UserInfo("name", "URL");
-    private final User user = new User(1L, info);
-    private final User otherUser = new User(2L, info);
+    private final User user = new User(1L, new UserInfo("name", "url"));
+    private final User otherUser = new User(2L, new UserInfo("name", "url"));
 
-    private final Post post = Post.createDefaultPost(1L, user, "content");
-    private final Comment comment = new Comment(1L, post, user, new CommentContent("content"));
+    private final Post post = new Post(1L, user, "content");
+    private final Comment comment = new Comment(1L, post, user, "comment content");
 
     @Test
-    void givenCommentCreated_whenLike_thenIncreaseLikeCount() {
-        //  given
-        int likeCount = comment.getLikeCount();
-
-        //  when
+    void givenCommentWhenLikeThenLikeCountShouldBe1() {
+        // when
         comment.like(otherUser);
 
-        //  then
-        assertEquals(likeCount + 1, comment.getLikeCount());
+        // then
+        assertEquals(1, comment.getLikeCount());
     }
 
     @Test
-    void givenCommentCreated_whenLikeByUser_thenThrowError() {
-        //  when, then
+    void givenCommentWhenLikeBySameUserThenLikeCountShouldThrowError() {
+        // when, then
         assertThrows(IllegalArgumentException.class, () -> comment.like(user));
     }
 
     @Test
-    void givenCommentCreated_whenUnlike_thenDecreaseLikeCount() {
-        //  given
-        comment.like(otherUser);
-        int likeCount = comment.getLikeCount();
+    void givenCommentCreatedAndLikeWhenUnlikeThenLikeCountShouldBe0() {
+        // given
+        comment.getLikeCount();
 
-        //  when
+        // when
         comment.unlike();
 
-        //  then
-        assertEquals(likeCount - 1, comment.getLikeCount());
-    }
-
-    @Test
-    void givenCommentCreated_whenUnlike_thenLikeCountIsZero() {
-        //  when
-        comment.unlike();
-
-        //  then
+        // then
         assertEquals(0, comment.getLikeCount());
     }
 
     @Test
-    void givenCommentCreated_whenUpdateComment_thenContentIsUpdated() {
-        //  given
-        String updateContent = "updated content";
+    void givenCommentCreatedWhenUnlikeThenLikeCountShouldBe0() {
+        // when
+        comment.unlike();
 
-        //  when
-        comment.updateComment(user, updateContent);
-
-        //  then
-        assertEquals(updateContent, comment.getContent());
+        // then
+        assertEquals(0, comment.getLikeCount());
     }
 
     @Test
-    void givenComment_whenUpdateContentLengthIsOver_thenThrowError() {
-        //  given
-        String content = "This is a test";
-        CommentContent commentContent = new CommentContent(content);
-        String updatedContent = "a".repeat(101);
+    void givenCommentWhenUpdateContentThenContentShouldBeUpdated() {
+        // given
+        String newContent = "new content";
 
-        //  when, then
-        assertThrows(IllegalArgumentException.class, () -> commentContent.updateContent(updatedContent));
+        // when
+        comment.updateContent(user, newContent);
+
+        // then
+        assertEquals(newContent, comment.getContent().getContentText());
+    }
+
+    @Test
+    void givenCommentWhenUpdateContentOver100ThenThrowError() {
+        // given
+        String newContent = "a".repeat(101);
+
+        // when, then
+        assertThrows(IllegalArgumentException.class, () -> comment.updateContent(user, newContent));
     }
 }

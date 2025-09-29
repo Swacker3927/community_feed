@@ -1,73 +1,71 @@
 package org.fastcampus.post.domain;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.fastcampus.post.domain.content.*;
 import org.fastcampus.user.domain.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class PostTest {
-    private final UserInfo info = new UserInfo("name", "URL");
-    private final User user = new User(1L, info);
-    private final User otherUser = new User(2L, info);
-
-    private final Post post = Post.createDefaultPost(1L, user, "content");
+    private final User user = new User(1L, new UserInfo("name", "url"));
+    private final User otherUser = new User(2L, new UserInfo("name", "url"));
+    private final Post post = new Post(1L, user, "content");
 
     @Test
-    void givenPost_whenLike_thenIncreaseLikeCount() {
-        //  given
-        int likeCount = post.getLikeCount();
-
-        //  when
+    void givenPostCreatedWhenLikeThenLikeCountShouldBe1() {
+        // when
         post.like(otherUser);
 
-        //  then
-        assertEquals(likeCount + 1, post.getLikeCount());
+        // then
+        assertEquals(1, post.getLikeCount());
     }
 
     @Test
-    void givenPostCreated_whenLikeByUser_thenThrowError() {
-        //  when, then
+    void givenPostCreatedWhenLikeByOtherUserThenThrowException() {
+        // when, then
         assertThrows(IllegalArgumentException.class, () -> post.like(user));
     }
 
     @Test
-    void givenPost_whenUnlike_thenDecreaseLikeCount() {
-        //  given
+    void givenPostCreatedAndLikeWhenUnlikeThenLikeCountShouldBe0() {
+        // given
         post.like(otherUser);
-        int likeCount = post.getLikeCount();
 
-        //  when
+        // when
         post.unlike();
 
-        //  then
-        assertEquals(likeCount - 1, post.getLikeCount());
-    }
-
-    @Test
-    void givenPostCreated_whenUnlike_thenLikeCountIsZero() {
-        //  when
-        post.unlike();
-
-        //  then
+        // then
         assertEquals(0, post.getLikeCount());
     }
 
     @Test
-    void givenPostCreated_whenUpdatePost_thenContentAndStateAreUpdated() {
-        //  given
-        String updateContent = "updated content";
+    void givenPostCreatedWhenUnlikeThenLikeCountShouldBe0() {
+        // when
+        post.unlike();
 
-        //  when
-        post.updatePost(user, updateContent, PostPublicationState.PUBLIC);
-
-        //  then
-        assertEquals(updateContent, post.getContent());
+        // then
+        assertEquals(0, post.getLikeCount());
     }
 
     @Test
-    void givenPostCreated_whenUpdatePostByOtherUser_thenThrowError() {
-        //  when, then
-        assertThrows(IllegalArgumentException.class, () -> post.updatePost(otherUser, "updated content", PostPublicationState.PUBLIC));
+    void givenPostCreatedWhenUpdateContentThenContentShouldBeUpdated() {
+        // given
+        String newPostContent = "new content";
+
+        // when
+        post.updateContent(user, newPostContent, null);
+
+        // then
+        Content content = post.getContent();
+        assertEquals(newPostContent, content.getContentText());
+    }
+
+    @Test
+    void givenPostCreatedWhenUpdateContentByOtherUserThenThrowException() {
+        // given
+        String newPostContent = "new content";
+
+        // when, then
+        assertThrows(IllegalArgumentException.class, () -> post.updateContent(otherUser, newPostContent, null));
     }
 }

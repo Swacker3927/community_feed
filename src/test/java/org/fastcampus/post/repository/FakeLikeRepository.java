@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.fastcampus.post.application.Interfaces.LikeRepository;
+import org.fastcampus.post.application.interfaces.LikeRepository;
 import org.fastcampus.post.domain.Post;
 import org.fastcampus.post.domain.comment.*;
 import org.fastcampus.user.domain.User;
 
 public class FakeLikeRepository implements LikeRepository {
-    private final Map<Post, Set<User>> postLikes = new HashMap<>();
-    private final Map<Comment, Set<User>> commentLikes = new HashMap<>();
+    Map<Post, Set<User>> postLikes = new HashMap<>();
+    Map<Comment, Set<User>> commentLikes = new HashMap<>();
 
     @Override
     public boolean checkLike(Post post, User user) {
@@ -42,11 +42,11 @@ public class FakeLikeRepository implements LikeRepository {
     }
 
     @Override
-    public boolean checkLike(Comment comment, User user) {
-        if (commentLikes.get(comment) == null) {
+    public boolean checkLike(Comment post, User user) {
+        if (commentLikes.get(post) == null) {
             return false;
         }
-        return commentLikes.get(comment).contains(user);
+        return commentLikes.get(post).contains(user);
     }
 
     @Override

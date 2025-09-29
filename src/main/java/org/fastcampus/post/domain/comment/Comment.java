@@ -1,82 +1,87 @@
 package org.fastcampus.post.domain.comment;
 
+import java.util.Objects;
+import lombok.Builder;
+import lombok.Getter;
 import org.fastcampus.common.domain.*;
 import org.fastcampus.post.domain.Post;
 import org.fastcampus.post.domain.content.CommentContent;
 import org.fastcampus.post.domain.content.Content;
 import org.fastcampus.user.domain.User;
 
+@Getter
 public class Comment {
     private final Long id;
     private final Post post;
     private final User author;
     private final Content content;
-    private final PositiveIntegerCounter likeCount;
+    private final PositiveIntegerCounter likeCounter;
 
-    public static Comment createComment(Post post, User author, String content) {
-        return new Comment(null, post, author, new CommentContent(content));
-    }
-
-    public Comment(Long id, Post post, User author, Content content) {
-        if (author == null) {
-            throw new IllegalArgumentException();
-        }
-
+    @Builder
+    public Comment(Long id, Post post, User author, Content content,
+            PositiveIntegerCounter likeCounter) {
         if (post == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Post should not be null.");
         }
-
+        if (author == null) {
+            throw new IllegalArgumentException("Author should not be null.");
+        }
         if (content == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Content should not be null or empty.");
         }
 
         this.id = id;
         this.post = post;
         this.author = author;
         this.content = content;
-        this.likeCount = new PositiveIntegerCounter();
+        this.likeCounter = likeCounter;
+    }
+
+    public Comment(Long id, Post post, User author, Content content) {
+        this(id, post, author, content, new PositiveIntegerCounter());
+    }
+
+    public Comment(Long id, Post post, User author, String content) {
+        this(id, post, author, new CommentContent(content), new PositiveIntegerCounter());
+    }
+
+    public void updateContent(User user, String content) {
+        if (!author.equals(user)) {
+            throw new IllegalArgumentException("Only author can update content.");
+        }
+        this.content.updateContent(content);
     }
 
     public void like(User user) {
-        if (this.author.equals(user)) {
-            throw new IllegalArgumentException();
+        if (author.equals(user)) {
+            throw new IllegalArgumentException("Author cannot like own comment.");
         }
-        likeCount.increase();
+        likeCounter.increase();
     }
 
     public void unlike() {
-        likeCount.decrease();
-    }
-
-    public void updateComment(User user, String updateContent) {
-        if (!this.author.equals(user)) {
-            throw new IllegalArgumentException();
-        }
-
-        this.content.updateContent(updateContent);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public String getContent() {
-        return content.getContentText();
-    }
-
-    public Content getContentObject() {
-        return content;
+        likeCounter.decrease();
     }
 
     public int getLikeCount() {
-        return likeCount.getCount();
+        return likeCounter.getCount();
+    }
+
+    public String getContentText() {
+        return content.getContentText();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Comment comment = (Comment) o;
+        return Objects.equals(id, comment.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

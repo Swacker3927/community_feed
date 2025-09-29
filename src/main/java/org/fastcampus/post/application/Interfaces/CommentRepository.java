@@ -1,9 +1,8 @@
-package org.fastcampus.post.application.Interfaces;
+package org.fastcampus.post.application.interfaces;
 
-import java.util.Optional;
 import org.fastcampus.post.domain.comment.*;
 
 public interface CommentRepository {
+    Comment findById(Long id);
     Comment save(Comment comment);
-    Optional<Comment> findById(Long id);
 }
